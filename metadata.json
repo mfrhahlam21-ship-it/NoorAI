@@ -1,0 +1,6 @@
+{
+  "name": "NoorAI Platform",
+  "description": "منصة نور آي - محسن ألعاب مدعوم بالذكاء الاصطناعي لتحسين الأداء وزيادة FPS وتحليل الانهيارات عبر Gemini.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
