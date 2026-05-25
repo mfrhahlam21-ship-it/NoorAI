@@ -1,0 +1,20 @@
+directories:
+  output: dist
+  buildResources: build
+appId: com.noorai.launcher
+productName: NoorAI Launcher
+files:
+  - filter:
+      - dist/**/*
+      - assets/**/*
+      - package.json
+win:
+  target:
+    - nsis
+  publisherName: NoorAI
+nsis:
+  oneClick: false
+  perMachine: false
+  allowElevation: true
+  allowToChangeInstallationDirectory: true
+electronVersion: 24.8.8

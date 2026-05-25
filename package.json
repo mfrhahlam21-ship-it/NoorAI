@@ -1,35 +1,94 @@
 {
-  "name": "react-example",
+  "name": "noorai-launcher",
+  "version": "0.1.0",
+  "description": "NoorAI Gaming Launcher - Windows Desktop Application",
+  "author": "NoorAI Team",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "main": "dist/main.js",
+  "homepage": "https://github.com/yourusername/noorai",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/noorai.git"
+  },
   "scripts": {
-    "dev": "tsx server.ts",
-    "build": "vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
-    "start": "node dist/server.cjs",
-    "clean": "rm -rf dist",
-    "lint": "tsc --noEmit"
+    "postinstall": "electron-builder install-app-deps",
+    "dev:renderer": "vite --config vite.renderer.config.ts",
+    "dev:main": "esbuild src/main/main.ts --bundle --platform=node --outfile=dist/main.js --external:electron --sourcemap --watch",
+    "dev:preload": "esbuild src/main/preload.ts --bundle --platform=node --outfile=dist/preload.js --external:electron --sourcemap --watch",
+    "dev": "concurrently \"npm:dev:renderer\" \"npm:dev:main\" \"npm:dev:preload\" \"wait-on http://localhost:5173 && electron .\"",
+    "build:renderer": "vite build --config vite.renderer.config.ts",
+    "build:main": "esbuild src/main/main.ts --bundle --platform=node --outfile=dist/main.js --external:electron",
+    "build:preload": "esbuild src/main/preload.ts --bundle --platform=node --outfile=dist/preload.js --external:electron",
+    "build": "npm run build:renderer && npm run build:main && npm run build:preload",
+    "dist": "npm run build && electron-builder --publish=never",
+    "dist:publish": "npm run build && electron-builder"
   },
   "dependencies": {
-    "@google/genai": "^2.4.0",
-    "@tailwindcss/vite": "^4.1.14",
-    "@vitejs/plugin-react": "^5.0.4",
-    "lucide-react": "^0.546.0",
+    "electron-is-dev": "^2.0.0",
     "react": "^19.0.1",
     "react-dom": "^19.0.1",
-    "vite": "^6.2.3",
-    "express": "^4.21.2",
-    "dotenv": "^17.2.3",
-    "motion": "^12.23.24"
+    "systeminformation": "^5.12.1"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.0",
     "@types/node": "^22.14.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@vitejs/plugin-react": "^5.0.4",
     "autoprefixer": "^10.4.21",
+    "concurrently": "^7.6.0",
+    "electron": "^24.3.0",
+    "electron-builder": "^24.6.0",
     "esbuild": "^0.25.0",
+    "postcss": "^8.0.0",
     "tailwindcss": "^4.1.14",
-    "tsx": "^4.21.0",
     "typescript": "~5.8.2",
-    "vite": "^6.2.3",
-    "@types/express": "^4.17.21"
+    "vite": "^6.0.0",
+    "wait-on": "^7.0.0"
+  },
+  "build": {
+    "appId": "com.noorai.launcher",
+    "productName": "NoorAI Launcher",
+    "directories": {
+      "output": "dist",
+      "buildResources": "assets"
+    },
+    "files": [
+      "dist/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "publisherName": "NoorAI Team",
+      "certificateFile": null,
+      "certificatePassword": null,
+      "signingHashAlgorithms": [
+        "sha256"
+      ],
+      "sign": null
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "NoorAI Launcher"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "yourusername",
+      "repo": "noorai",
+      "private": false
+    }
   }
 }

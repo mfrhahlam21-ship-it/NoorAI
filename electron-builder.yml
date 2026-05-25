@@ -1,0 +1,13 @@
+appId: com.noorai.launcher
+productName: NoorAI Launcher
+win:
+  target:
+    - nsis
+nsis:
+  oneClick: false
+  perMachine: false
+  allowElevation: true
+  allowToChangeInstallationDirectory: true
+files:
+  - dist/**
+  - assets/**

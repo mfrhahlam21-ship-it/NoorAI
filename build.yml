@@ -1,0 +1,100 @@
+name: Build & Release NoorAI Launcher
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 45
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: launcher/package-lock.json
+
+      - name: Install root dependencies
+        run: npm install --prefer-offline --no-fund
+
+      - name: Install launcher dependencies
+        working-directory: ./launcher
+        run: npm install --prefer-offline --no-fund
+
+      - name: Build launcher
+        working-directory: ./launcher
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Build installer with Electron Builder
+        working-directory: ./launcher
+        run: npm run dist
+        env:
+          NODE_ENV: production
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Windows installer artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: noorai-launcher-windows
+          path: launcher/dist/**/*.exe
+          retention-days: 30
+
+      - name: Upload Windows NSIS installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: noorai-nsis-installer
+          path: launcher/dist/*Setup*.exe
+          retention-days: 30
+
+      - name: List build artifacts
+        working-directory: ./launcher
+        run: |
+          Write-Output "=== Build Artifacts ==="
+          Get-ChildItem -Recurse -Path dist -Include "*.exe" -ErrorAction SilentlyContinue | ForEach-Object { Write-Output $_.FullName }
+          Get-ChildItem -Recurse -Path dist -Include "*.zip" -ErrorAction SilentlyContinue | ForEach-Object { Write-Output $_.FullName }
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            launcher/dist/**/*.exe
+            launcher/dist/**/*.zip
+          draft: false
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  post-build:
+    needs: build
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Check build status
+        run: |
+          if [ "${{ needs.build.result }}" == "success" ]; then
+            echo "✅ NoorAI Launcher build completed successfully!"
+          else
+            echo "❌ NoorAI Launcher build failed. Check logs above."
+            exit 1
+          fi

@@ -1,20 +1,11 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+NoorAI Desktop Launcher
 
-# Run and deploy your AI Studio app
+This folder contains a standalone Electron + React + Vite launcher for Windows.
 
-This contains everything you need to run your app locally.
+Key commands:
+- npm install
+- npm run dev  (starts renderer dev server, builds main/preload and launches Electron)
+- npm run build (builds renderer and main/preload)
+- npm run dist  (builds and packages an installer using electron-builder)
 
-View your app in AI Studio: https://ai.studio/apps/57050804-1cf0-49c1-b857-a15d327ab492
-
-## Run Locally
-
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Security: contextIsolation is enabled and a preload script exposes a safe API surface.
