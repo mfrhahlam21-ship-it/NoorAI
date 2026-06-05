@@ -1,0 +1,245 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Cairo", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Custom Cyber Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0c;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00ffcc;
+}
+
+@keyframes pulse-neon {
+  0%, 100% {
+    text-shadow: 0 0 8px rgba(0, 255, 204, 0.5), 0 0 15px rgba(0, 255, 204, 0.3);
+  }
+  50% {
+    text-shadow: 0 0 18px rgba(0, 255, 204, 0.8), 0 0 30px rgba(0, 255, 204, 0.5);
+  }
+}
+
+.pulse-neon-text {
+  animation: pulse-neon 2.5s infinite;
+}
+
+/* Immersive Glass panel styling from Design Theme */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.gaming-border-glow {
+  box-shadow: 0 0 20px rgba(0, 255, 204, 0.15);
+}
+
+.rgb-border {
+  position: relative;
+  overflow: hidden;
+}
+
+.rgb-border::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(90deg, #00ffcc, #ff00ff, #00ffcc);
+  z-index: 0;
+  border-radius: inherit;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  padding: 1px;
+  pointer-events: none;
+}
+
+/* Custom glowing effects for meters */
+.glow-cyan {
+  box-shadow: 0 0 8px #00ffcc;
+}
+
+.glow-magenta {
+  box-shadow: 0 0 8px #ff00ff;
+}
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE DESIGN - NoorAI Website
+   Adapts to mobile, tablet, laptop, desktop, and ultrawide
+   ═══════════════════════════════════════════════════════ */
+
+/* Mobile devices (up to 640px) */
+@media (max-width: 640px) {
+  /* Ensure modals don't overflow */
+  .fixed.inset-0 {
+    padding: 8px !important;
+  }
+  
+  /* Modal content responsive */
+  .max-w-2xl {
+    max-width: 95vw !important;
+  }
+  
+  .max-w-md {
+    max-width: 95vw !important;
+  }
+  
+  .max-w-sm {
+    max-width: 90vw !important;
+  }
+  
+  /* Reduce padding on modals */
+  .p-8 {
+    padding: 16px !important;
+  }
+  
+  .p-6 {
+    padding: 12px !important;
+  }
+  
+  /* Reduce font sizes */
+  .text-3xl {
+    font-size: 1.5rem !important;
+  }
+  
+  .text-2xl {
+    font-size: 1.25rem !important;
+  }
+  
+  .text-xl {
+    font-size: 1.125rem !important;
+  }
+  
+  .text-lg {
+    font-size: 1rem !important;
+  }
+  
+  /* Stack grid layouts */
+  .grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Flex wrapping */
+  .flex-col.sm\:flex-row {
+    flex-direction: column !important;
+  }
+  
+  /* Icon sizing */
+  [size="24"] {
+    width: 20px !important;
+    height: 20px !important;
+  }
+  
+  [size="20"] {
+    width: 18px !important;
+    height: 18px !important;
+  }
+  
+  /* Prevent overflow on buttons */
+  button {
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+}
+
+/* Tablets (640px - 1023px) */
+@media (max-width: 1023px) and (min-width: 641px) {
+  /* Adjust modal width for tablets */
+  .max-w-2xl {
+    max-width: 95vw !important;
+  }
+  
+  /* Grid layouts for tablets */
+  .grid-cols-2 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* Laptops and desktops (1024px and up) */
+@media (min-width: 1024px) {
+  /* Full-width layouts */
+  .max-w-2xl {
+    max-width: 42rem !important;
+  }
+  
+  .max-w-md {
+    max-width: 28rem !important;
+  }
+  
+  .max-w-sm {
+    max-width: 24rem !important;
+  }
+}
+
+/* Ultrawide screens (1920px+) */
+@media (min-width: 1920px) {
+  /* Ensure content doesn't stretch too much */
+  .max-w-2xl {
+    max-width: 48rem !important;
+  }
+  
+  .max-w-md {
+    max-width: 32rem !important;
+  }
+  
+  body {
+    font-size: 15px;
+  }
+}
+
+/* High DPI / Retina displays */
+@media (min-resolution: 192dpi) or (min-resolution: 2dppx) {
+  /* Ensure crisp rendering */
+  * {
+    -webkit-font-smoothing: subpixel-antialiased;
+  }
+}
+
+/* Landscape orientation on small devices */
+@media (max-height: 500px) and (orientation: landscape) {
+  /* Reduce vertical spacing */
+  .space-y-4 > * + * {
+    margin-top: 6px !important;
+  }
+  
+  .space-y-6 > * + * {
+    margin-top: 8px !important;
+  }
+  
+  /* Reduce padding */
+  .p-6 {
+    padding: 8px !important;
+  }
+  
+  .p-8 {
+    padding: 12px !important;
+  }
+  
+  /* Stack layout vertically */
+  .flex-col {
+    flex-direction: column !important;
+  }
+  
+  /* Reduce modal height */
+  .max-h-\[90vh\] {
+    max-height: 85vh !important;
+  }
+}
+
+

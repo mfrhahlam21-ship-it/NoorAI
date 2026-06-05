@@ -1,0 +1,76 @@
+appId: com.noorai.launcher
+productName: NoorAI Launcher
+copyright: "Copyright © 2026 NoorAI Team. All rights reserved."
+
+# Publisher info used in About dialog and Add/Remove Programs
+extraMetadata:
+  version: "0.1.0"
+  author: "NoorAI Team"
+  description: "NoorAI Standalone Gaming Launcher & Performance Optimizer"
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: assets/icon.ico
+  publisherName: "NoorAI Team"
+  # ── Code Signing (active when CSC_LINK and CSC_KEY_PASSWORD are set) ──────
+  # To enable signing: set environment variables before running dist:
+  #   $env:CSC_LINK = "C:\path\to\certificate.pfx"
+  #   $env:CSC_KEY_PASSWORD = "your-cert-password"
+  #   $env:CSC_NAME = "NoorAI Team"
+  # For EV certificates, set $env:WIN_CSC_LINK instead.
+  # When env vars are not set, electron-builder will skip signing (unsigned build).
+  signingHashAlgorithms:
+    - sha256
+  rfc3161TimeStampServer: "http://timestamp.digicert.com"
+  # Fallback timestamp server (DigiCert alternative)
+  # rfc3161TimeStampServer: "http://timestamp.sectigo.com"
+  artifactName: "NoorAI-Setup-x64.${ext}"
+  # RequestExecutionLevel: asInvoker keeps SmartScreen reputation from being
+  # unnecessarily triggered by elevation prompts on launch
+  requestedExecutionLevel: asInvoker
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowElevation: true
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: "NoorAI Launcher"
+  installerIcon: assets/icon.ico
+  uninstallerIcon: assets/icon.ico
+  # Installer header image (recommended: 150x57 px BMP)
+  # installerHeader: assets/installer-header.bmp
+  # License shown during install
+  # license: assets/LICENSE.rtf
+  artifactName: "NoorAI-Setup-x64.${ext}"
+  deleteAppDataOnUninstall: false
+
+# Files to include in the installer package
+files:
+  - dist/**/*
+  - assets/**/*
+  - package.json
+  - "!**/node_modules/**"
+  - "!src/**"
+  - "!*.ts"
+  - "!*.map"
+
+directories:
+  output: dist
+  buildResources: assets
+
+# Auto-update publishing (only used with dist:publish)
+publish:
+  provider: github
+  owner: yourusername
+  repo: noorai
+  private: false
+
+# Force production NODE_ENV for the packaged app
+electronVersion: "24.3.0"
+nodeGypRebuild: false
+buildDependenciesFromSource: false
