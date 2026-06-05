@@ -271,15 +271,15 @@ export default function AppMain() {
   const triggerLauncherInstallation = async () => {
     playSynthBeep(440, 0.1);
 
-    // Direct GitHub Releases installer URL (explicit requirement)
-    const releaseUrl = 'https://github.com/mfrhahlam21-ship-it/NoorAl/releases/download/v1.0.0/NoorAl-Setup-x64.exe';
+    // Google Drive direct download link only
+    const googleDriveUrl = 'https://drive.google.com/uc?export=download&id=1udTg00JAogR6n8aqk6W5FtKgsxFnL15A';
 
     try {
       setDownloadProgress(0);
-      setDownloadStage('بدء تنزيل ملف التثبيت من GitHub Releases...');
+      setDownloadStage('بدء تنزيل ملف التثبيت...');
 
       const link = document.createElement('a');
-      link.href = releaseUrl;
+      link.href = googleDriveUrl;
       link.rel = 'noopener noreferrer';
       link.style.display = 'none';
       document.body.appendChild(link);
